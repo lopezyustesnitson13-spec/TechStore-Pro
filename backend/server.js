@@ -5,6 +5,8 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const Producto = require('./models/producto');
+const authRoutes = require('./routes/auth');           // ← AGREGAR S14
+const verificarToken = require('./middleware/auth');   // ← AGREGAR S14
 
 // 2. Crear la aplicación y definir el puerto
 const app = express();
@@ -73,7 +75,7 @@ app.put('/api/productos/:id', async (req, res) => {
 // BACKEND/SERVER.JS - BLOQUE 8 (NUEVO): DELETE /API/PRODUCTOS/:ID
 
 // 8. Ruta DELETE /api/productos/:id - eliminar un producto
-app.delete('/api/productos/:id', async (req, res) => {
+app.delete('/api/productos/:id', verificarToken, async (req, res) => {
   try {
     const eliminado = await Producto.findByIdAndDelete(req.params.id);
     if (!eliminado) return res.status(404).json({ error: 'Producto no encontrado' });
@@ -82,3 +84,5 @@ app.delete('/api/productos/:id', async (req, res) => {
     res.status(400).json({ error: err.message });
   }
 });
+// 11. Rutas de autenticación ← NUEVO S14
+app.use('/api/auth', authRoutes);
