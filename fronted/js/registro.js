@@ -1,9 +1,3 @@
-// ================================================
-// S09: REGISTRO CON API COLOMBIA
-// Carga departamentos y municipios desde api-colombia.com
-// Guarda el registro en LocalStorage
-// ================================================
-
 const URL_API = 'https://api-colombia.com/api/v1';
 
 const selectDepto  = document.querySelector('#reg-departamento');
@@ -11,10 +5,8 @@ const selectMuni   = document.querySelector('#reg-municipio');
 const formRegistro = document.querySelector('#form-registro');
 
 // ── PASO 1: Cargar departamentos al abrir la página ──────────────────────────
-// Se ejecuta automáticamente — el usuario ve la lista al entrar al formulario
 async function cargarDepartamentos() {
   try {
-    // Mostrar estado de carga mientras espera la API
     selectDepto.innerHTML = '<option value="">Cargando departamentos...</option>';
 
     const respuesta     = await fetch(`${URL_API}/Department`);
@@ -27,23 +19,20 @@ async function cargarDepartamentos() {
     selectDepto.innerHTML = '<option value="">-- Selecciona un departamento --</option>';
     departamentos.forEach(function(depto) {
       const opcion = document.createElement('option');
-      opcion.value       = depto.id;       // usamos el id para pedir municipios
+      opcion.value       = depto.id;       // id para consultar los municipios en el endpoint
       opcion.textContent = depto.name;
       selectDepto.appendChild(opcion);
     });
 
   } catch (error) {
-    // Si la API falla, mostrar mensaje claro al usuario
     selectDepto.innerHTML = '<option value="">Error al cargar. Recarga la página.</option>';
     console.error('Error cargando departamentos:', error);
   }
 }
 
 // ── PASO 2: Cargar municipios cuando el usuario elige un departamento ─────────
-// Se ejecuta cada vez que cambia el select de departamento
 async function cargarMunicipios(idDepartamento) {
   try {
-    // Deshabilitar y mostrar estado de carga
     selectMuni.disabled = true;
     selectMuni.innerHTML = '<option value="">Cargando municipios...</option>';
 
@@ -53,7 +42,6 @@ async function cargarMunicipios(idDepartamento) {
     // Ordenar alfabéticamente
     municipios.sort(function(a, b) { return a.name.localeCompare(b.name); });
 
-    // Habilitar el select y llenar con municipios
     selectMuni.innerHTML = '<option value="">-- Selecciona un municipio --</option>';
     municipios.forEach(function(muni) {
       const opcion = document.createElement('option');
@@ -70,12 +58,10 @@ async function cargarMunicipios(idDepartamento) {
 }
 
 // ── PASO 3: Escuchar cambio en el select de departamento ─────────────────────
-// Cada vez que el usuario cambia el departamento, cargar sus municipios
 selectDepto.addEventListener('change', function() {
   const idSeleccionado = selectDepto.value;
 
   if (!idSeleccionado) {
-    // Si elige la opción vacía, resetear municipios
     selectMuni.innerHTML = '<option value="">Primero elige un departamento</option>';
     selectMuni.disabled  = true;
     return;
@@ -84,16 +70,17 @@ selectDepto.addEventListener('change', function() {
   cargarMunicipios(idSeleccionado);
 });
 
-// ── PASO 4: Validar y guardar el registro en LocalStorage ────────────────────
+// ── PASO 4: Validar y registrar usuario ──────────────────────────────────────
 if (formRegistro) {
-  formRegistro.addEventListener('submit', function(evento) {
+  formRegistro.addEventListener('submit', async function(evento) {
     evento.preventDefault();
 
-    const nombre      = document.querySelector('#reg-nombre').value.trim();
-    const email       = document.querySelector('#reg-email').value.trim();
-    const departamento = selectDepto.options[selectDepto.selectedIndex].text;
-    const municipio   = selectMuni.value;
-    let hayErrores    = false;
+    const nombre = document.querySelector('#reg-nombre').value.trim();
+    const email = document.querySelector('#reg-email').value.trim();
+    const password = document.querySelector('#reg-password').value;
+    const municipio = selectMuni.value;
+
+    let hayErrores = false;
 
     // Validar nombre
     if (nombre.length < 3) {
@@ -109,6 +96,14 @@ if (formRegistro) {
       hayErrores = true;
     } else {
       document.querySelector('#error-reg-email').textContent = '';
+    }
+
+    // Validar contraseña
+    if (password.length < 6) {
+      document.querySelector('#error-reg-password').textContent = 'La contraseña debe tener al menos 6 caracteres';
+      hayErrores = true;
+    } else {
+      document.querySelector('#error-reg-password').textContent = '';
     }
 
     // Validar departamento
@@ -127,52 +122,42 @@ if (formRegistro) {
       document.querySelector('#error-reg-municipio').textContent = '';
     }
 
+    // Si no hay errores, enviar los datos al servidor
     if (!hayErrores) {
-      // Guardar en LocalStorage
-      const usuario = {
-        nombre,
-        email,
-        departamento,
-        municipio,
-        fecha: new Date().toLocaleDateString('es-CO')
-      };
-      localStorage.setItem('usuario-registro', JSON.stringify(usuario));
+      try {
+        const respuesta = await fetch('http://localhost:3000/api/auth/registro', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            nombre:       nombre,
+            email:        email,
+            password:     password,
+            departamento: selectDepto.options[selectDepto.selectedIndex].textContent,
+            municipio:    municipio
+          })
+        });
 
-      // Mostrar mensaje de éxito
-      document.querySelector('#registro-exito').style.display = 'block';
-      formRegistro.reset();
-      selectMuni.innerHTML = '<option value="">Primero elige un departamento</option>';
-      selectMuni.disabled  = true;
+        const datos = await respuesta.json();
+
+        if (!respuesta.ok) {
+          document.querySelector('#error-reg-email').textContent =
+            datos.error || 'Error al crear la cuenta';
+          return;
+        }
+
+        document.querySelector('#registro-exito').style.display = 'block';
+        formRegistro.reset();
+        selectMuni.innerHTML = '<option value="">Primero elige un departamento</option>';
+        selectMuni.disabled  = true;
+
+      } catch (error) {
+        document.querySelector('#error-reg-nombre').textContent =
+          'No se pudo conectar. Verifica que npm run dev esté corriendo.';
+      }
     }
   });
 }
 
-// ── Ejecutar al cargar la página ─────────────────────────────────────────────
-cargarDepartamentos();
-
-// ── BONUS: Mostrar registro guardado si existe ────────────────────────────────
-function mostrarRegistroGuardado() {
-  const guardado = localStorage.getItem('usuario-registro');
-  if (!guardado) return;
-
-  const usuario = JSON.parse(guardado);
-  const resumen = document.querySelector('#resumen-registro');
-  if (!resumen) return;
-
-  resumen.innerHTML = `
-    <div class="tarjeta-registro" >
-      <h3 style="margin-bottom:12px;color:#0369a1;">👤 Cuenta registrada</h3>
-      <p><strong>Nombre:</strong> ${usuario.nombre}</p>
-      <p><strong>Email:</strong> ${usuario.email}</p>
-      <p><strong>Ubicación:</strong> ${usuario.municipio}, ${usuario.departamento}</p>
-      <p><strong>Fecha:</strong> ${usuario.fecha}</p>
-      <button onclick="localStorage.removeItem('usuario-registro'); location.reload();" 
-              style="margin-top:12px;padding:8px 16px;background:#ef4444;color:white;border:none;border-radius:6px;cursor:pointer;">
-        Cerrar sesión
-      </button>
-    </div>
-  `;
-  resumen.style.display = 'block';
-}
-
-mostrarRegistroGuardado();
+// ── EJECUCIÓN INICIAL ────────────────────────────────────────────────────────
+// Llama a la API de departamentos al cargar la página
+document.addEventListener('DOMContentLoaded', cargarDepartamentos);

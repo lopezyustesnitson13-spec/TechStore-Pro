@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | TechStore Pro</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="barra-scroll" id="barra-scroll"></div>
+  <header class="header">
+    <div class="header-logo">
+      <span class="logo-icono">💻</span>
+      <span class="logo-texto">TechStore Pro</span>
+    </div>
+    <button id="menu-toggle" class="menu-toggle" aria-label="Abrir menú" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <nav id="nav-menu" class="nav-menu">
+      <a href="index.html">Inicio</a>
+      <a href="productos.html">Productos</a>
+      <a href="nosotros.html">Nosotros</a>
+      <a href="contacto.html">Contacto</a>
+      <a href="registro.html">Registro</a>
+      <a href="login.html" class="activo">Login</a>
+    </nav>
+    <button id="btn-tema" class="btn-tema" aria-label="Cambiar tema">🌙</button>
+  </header>
+  <main>
+    <div class="page-header">
+      <p class="breadcrumb"><a href="index.html">Inicio</a> / Login</p>
+      <h1>Iniciar sesión</h1>
+      <p>Accede a tu cuenta para ver tus pedidos.</p>
+    </div>
+    <section style="max-width:480px; margin:60px auto; padding:0 32px;">
+      <form id="form-login" class="form-contacto" novalidate>
+        <div class="campo">
+          <label for="login-email">Correo electrónico</label>
+          <input type="email" id="login-email"
+                 placeholder="correo@ejemplo.com"
+                 autocomplete="email">
+          <span class="error" id="error-login-email"></span>
+        </div>
+        <div class="campo">
+          <label for="login-password">Contraseña</label>
+          <input type="password" id="login-password"
+                 placeholder="Tu contraseña"
+                 autocomplete="current-password">
+          <span class="error" id="error-login-password"></span>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%; justify-content:center;">
+          Iniciar sesión
+        </button>
+        <div id="msj-login" class="mensaje-exito" style="margin-top:16px;"></div>
+      </form>
+    </section>
+  </main>
+  <footer class="footer">
+    <p>&copy; 2026 TechStore Pro. Todos los derechos reservados.</p>
+  </footer>
+  <script src="js/main.js"></script>
+  <script src="js/login.js"></script>
+</body>
+</html>
