@@ -16,18 +16,28 @@
       <span class="logo-icono">💻</span>
       <span class="logo-texto">TechStore Pro</span>
     </div>
+    
     <button id="menu-toggle" class="menu-toggle" aria-label="Abrir menú" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
-  <nav id="nav-menu" class="nav-menu">
-      <a href="index.html" class="activo">Inicio</a>
+
+    <nav id="nav-menu" class="nav-menu">
+      <a href="index.html">Inicio</a>
       <a href="productos.html">Productos</a>
-      <a href="nosotros.html">Nosotros</a>
+      <a href="nosotros.html" class="activo">Nosotros</a>
       <a href="contacto.html">Contacto</a>
-      <a href="registro.html">Registro</a>  ← agregar esta línea
+      <a href="registro.html">Registro</a>
     </nav>
-    <!-- ✏️ S07: botón tema — extremo derecho, fuera del nav -->
-    <button id="btn-tema" class="btn-tema" aria-label="Cambiar tema">🌙</button>
+
+    <!-- ACCIONES HEADER — Login, Tema y Carrito -->
+    <div class="header-acciones">
+      <a href="login.html" id="nav-login" class="btn-login-header">Login</a>
+      <button id="btn-tema" class="btn-tema" aria-label="Cambiar tema">🌙</button>
+      <div class="carrito-badge-contenedor">
+        <span>🛒</span>
+        <span class="carrito-badge" id="carrito-badge">0</span>
+      </div>
+    </div>
   </header>
 
   <main>
@@ -90,8 +100,8 @@
             Opción B: placeholder con emoji (más fácil)
           -->
           <div class="miembro-avatar-placeholder">👤</div>
-          <h3>Nombre Apellido</h3>
-          <span class="cargo">Rol en el proyecto</span>
+          <h3>Nitson Estiven Lopez</h3>
+          <span class="cargo">Desarrollador Principal</span>
           <p>Breve descripción: habilidades, responsabilidades o dato interesante del integrante.</p>
         </div>
 
@@ -121,7 +131,7 @@
     <div class="footer-contenido">
       <div class="footer-marca">
         <span class="logo-icono">🏪</span>
-        <span class="logo-texto">Mi Proyecto</span>
+        <span class="logo-texto">TechStore Pro</span>
         <p>Tu tienda de tecnología en línea.</p>
       </div>
       <nav class="footer-nav">
@@ -130,10 +140,11 @@
         <a href="productos.html">Productos</a>
         <a href="nosotros.html">Nosotros</a>
         <a href="contacto.html">Contacto</a>
+        <a href="registro.html">Registro</a>
       </nav>
       <div class="footer-contacto">
         <h4>Contacto</h4>
-        <p>📍 Ciudad, Departamento</p>
+        <p>📍 Garzón, Huila</p>
         <p>📞 300 000 0000</p>
         <p>✉️ info@techstorepro.co</p>
       </div>

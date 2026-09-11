@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- ✏️ Cambia el título: "Productos | Mi Tienda" o "Servicios | Mi Empresa" -->
   <title>Productos | TechStore Pro</title>
   <link rel="stylesheet" href="css/styles.css">
 </head>
@@ -13,25 +12,28 @@
 
   <!-- ============================================================
       HEADER — Igual en todas las páginas
-       Cambia class="activo" al enlace "Productos"
-       ============================================================ -->
+      ============================================================ -->
   <header class="header">
     <div class="header-logo">
       <span class="logo-icono">💻</span>
       <span class="logo-texto">TechStore Pro</span>
     </div>
+    
     <button id="menu-toggle" class="menu-toggle" aria-label="Abrir menú" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
-n  <nav id="nav-menu" class="nav-menu">
-      <a href="index.html" class="activo">Inicio</a>
-      <a href="productos.html">Productos</a>
+
+    <nav id="nav-menu" class="nav-menu">
+      <a href="index.html">Inicio</a>
+      <a href="productos.html" class="activo">Productos</a>
       <a href="nosotros.html">Nosotros</a>
       <a href="contacto.html">Contacto</a>
-      <a href="registro.html">Registro</a>  ← agregar esta línea
+      <a href="registro.html">Registro</a>
     </nav>
-    <!-- ✏️ S07: botón tema — extremo derecho, fuera del nav -->
+
+    <!-- ✏️ Acciones del Header: Login, Tema y Carrito -->
     <div class="header-acciones">
+      <a href="login.html" id="nav-login" class="btn-login-header">Login</a>
       <button id="btn-tema" class="btn-tema" aria-label="Cambiar tema">🌙</button>
       <div class="carrito-badge-contenedor">
         <span>🛒</span>
@@ -69,7 +71,7 @@ n  <nav id="nav-menu" class="nav-menu">
     <div class="footer-contenido">
       <div class="footer-marca">
         <span class="logo-icono">🏪</span>
-        <span class="logo-texto">Mi Proyecto</span>
+        <span class="logo-texto">TechStore Pro</span>
         <p>Tu tienda de tecnología en línea.</p>
       </div>
       <nav class="footer-nav">
@@ -78,10 +80,11 @@ n  <nav id="nav-menu" class="nav-menu">
         <a href="productos.html">Productos</a>
         <a href="nosotros.html">Nosotros</a>
         <a href="contacto.html">Contacto</a>
+        <a href="registro.html">Registro</a>
       </nav>
       <div class="footer-contacto">
         <h4>Contacto</h4>
-        <p>📍 Ciudad, Departamento</p>
+        <p>📍 Garzón, Huila</p>
         <p>📞 300 000 0000</p>
         <p>✉️ info@techstorepro.co</p>
       </div>
@@ -90,18 +93,19 @@ n  <nav id="nav-menu" class="nav-menu">
       <p>&copy; 2026 TechStore Pro — Todos los derechos reservados</p>
     </div>
   </footer>
-<!-- MODAL PRODUCTO — S06 -->
-<div class="modal-overlay" id="modal-producto">
-  <div class="modal-caja">
-    <button class="modal-cerrar" id="modal-cerrar">×</button>
-    <div class="modal-icono" id="modal-icono">💻</div>
-    <h2 class="modal-titulo" id="modal-titulo">Nombre del producto</h2>
-    <p class="modal-desc" id="modal-desc">Descripción del producto</p>
-    <p class="modal-precio" id="modal-precio">$0</p>
-    <button class="modal-btn-carrito">🛒 Agregar al carrito</button>
-  </div>
-</div>
-  <script src="js/main.js"></script>
 
+  <!-- MODAL PRODUCTO — S06 -->
+  <div class="modal-overlay" id="modal-producto">
+    <div class="modal-caja">
+      <button class="modal-cerrar" id="modal-cerrar">×</button>
+      <div class="modal-icono" id="modal-icono">💻</div>
+      <h2 class="modal-titulo" id="modal-titulo">Nombre del producto</h2>
+      <p class="modal-desc" id="modal-desc">Descripción del producto</p>
+      <p class="modal-precio" id="modal-precio">$0</p>
+      <button class="modal-btn-carrito">🛒 Agregar al carrito</button>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
 </body>
 </html>

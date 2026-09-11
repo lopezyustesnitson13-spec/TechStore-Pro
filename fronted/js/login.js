@@ -47,12 +47,22 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       const datos = await respuesta.json();
+      console.log("📦 Respuesta completa del servidor:", datos); // 👈 Inspecciona esto en la consola F12 si lo necesitas
 
       if (respuesta.ok) {
-        // Guardar el token JWT o los datos de sesión en localStorage
         if (datos.token) {
           localStorage.setItem('token', datos.token);
         }
+
+        // Buscamos el nombre de forma flexible en cualquier propiedad probable
+        const nombreUsuario = 
+          (datos.usuario && datos.usuario.nombre) || 
+          datos.nombre || 
+          (datos.user && datos.user.nombre) || 
+          'Usuario';
+
+        localStorage.setItem('usuario-nombre', nombreUsuario);
+
         if (datos.usuario) {
           localStorage.setItem('usuario', JSON.stringify(datos.usuario));
         }
@@ -68,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
       } else {
         // Mostrar mensaje de error proveniente de la API
         msjLogin.style.color = '#ef4444';
-        msjLogin.textContent = datos.mensaje || 'Credenciales incorrectas.';
+        msjLogin.textContent = datos.mensaje || datos.error || 'Credenciales incorrectas.';
       }
     } catch (error) {
       console.error('Error en la petición de login:', error);

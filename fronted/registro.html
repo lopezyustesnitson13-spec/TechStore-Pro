@@ -16,6 +16,7 @@
         <span class="logo-icono">💻</span>
         <span class="logo-texto">TechStore Pro</span>
       </div>
+      
       <button
         id="menu-toggle"
         class="menu-toggle"
@@ -24,6 +25,7 @@
       >
         <span></span><span></span><span></span>
       </button>
+
       <nav id="nav-menu" class="nav-menu">
         <a href="index.html">Inicio</a>
         <a href="productos.html">Productos</a>
@@ -31,9 +33,16 @@
         <a href="contacto.html">Contacto</a>
         <a href="registro.html" class="activo">Registro</a>
       </nav>
-      <button id="btn-tema" class="btn-tema" aria-label="Cambiar tema">
-        🌙
-      </button>
+
+      <!-- ACCIONES HEADER — Login, Tema y Carrito -->
+      <div class="header-acciones">
+        <a href="login.html" id="nav-login" class="btn-login-header">Login</a>
+        <button id="btn-tema" class="btn-tema" aria-label="Cambiar tema">🌙</button>
+        <div class="carrito-badge-contenedor">
+          <span>🛒</span>
+          <span class="carrito-badge" id="carrito-badge">0</span>
+        </div>
+      </div>
     </header>
 
     <main>
@@ -106,7 +115,7 @@
       <div class="footer-contenido">
         <div class="footer-marca">
           <span class="logo-icono">🏪</span>
-          <span class="logo-texto">Mi Proyecto</span>
+          <span class="logo-texto">TechStore Pro</span>
           <p>Tu tienda de tecnología en línea.</p>
         </div>
         <nav class="footer-nav">
@@ -115,10 +124,11 @@
           <a href="productos.html">Productos</a>
           <a href="nosotros.html">Nosotros</a>
           <a href="contacto.html">Contacto</a>
+          <a href="registro.html">Registro</a>
         </nav>
         <div class="footer-contacto">
           <h4>Contacto</h4>
-          <p>📍 Ciudad, Departamento</p>
+          <p>📍 Garzón, Huila</p>
           <p>📞 300 000 0000</p>
           <p>✉️ info@techstorepro.co</p>
         </div>
@@ -128,6 +138,8 @@
       </div>
     </footer>
 
+    <!-- Scripts necesarios (main.js para la barra de scroll y tema, registro.js para la lógica del formulario) -->
+    <script src="js/main.js"></script>
     <script src="js/registro.js"></script>
   </body>
 </html>
