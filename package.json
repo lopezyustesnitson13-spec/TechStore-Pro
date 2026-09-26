@@ -1,5 +1,7 @@
 {
   "dependencies": {
-    "mongoose": "^9.9.2"
+    "@tailwindcss/vite": "^4.3.3",
+    "mongoose": "^9.9.2",
+    "tailwindcss": "^4.3.3"
   }
 }

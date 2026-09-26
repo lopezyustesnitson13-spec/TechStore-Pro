@@ -8,6 +8,7 @@ const authRoutes      = require('./routes/auth');           // ← AGREGAR S14
 const verificarToken  = require('./middleware/auth');   // ← AGREGAR S14
 const productosRoutes = require('./routes/productos'); 
 const ordenesRouter = require('./routes/ordenes');
+const pagoRoutes      = require('./routes/pago');
 // 2. Crear la aplicación y definir el puerto
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -37,3 +38,7 @@ app.use('/api/productos', productosRoutes);
 
 // 13. Rutas de ordenes <- agregar S15 (al final, despues del // 12)
 app.use('/api/ordenes', ordenesRouter);
+
+app.use('/api/pagos', pagoRoutes);
+
+app.use('/api/pagos', require('./routes/pago'));

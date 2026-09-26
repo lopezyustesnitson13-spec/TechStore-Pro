@@ -7,6 +7,7 @@
     ✏️ PERSONALIZA: Cambia el título por el nombre de tu proyecto
     Ejemplo: "Tienda La Cosecha | Inicio" o "Studio Foto Lima | Inicio"
   -->
+    
   <title>TechStore Pro | Inicio</title>
   <link rel="stylesheet" href="css/styles.css">
 </head>
@@ -76,7 +77,8 @@
       <div class="carrito-acciones">
         <button id="btn-vaciar" class="btn btn-secundario">🗑️ Vaciar carrito</button>
         <a href="index.html" class="btn btn-primario">Seguir comprando</a>
-        <button id="btn-confirmar" class="btn btn-primario">✅ comfirmar pedido</button>
+<button id="btn-confirmar" class="btn btn-primario">💳 Pagar con Wompi</button>
+
       </div>
 
       <div id="checkout-mensaje" style="display: none; margin-top:20px;"></div>
@@ -111,6 +113,9 @@
       <p>&copy; 2026 TechStore Pro — Todos los derechos reservados</p>
     </div>
   </footer>
+
+<!-- Script oficial del Widget de Wompi — cargar desde su CDN -->
+<script src="https://checkout.wompi.co/widget.js"></script>
 
   <script src="js/main.js"></script>
 

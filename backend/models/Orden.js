@@ -24,8 +24,9 @@ total: { type: Number, required: true },
 estado: {
   type: String,
   default: 'pendiente',
-  enum: ['pendiente', 'procesando', 'enviado', 'entregado']
+  enum: ['pendiente', 'procesando', 'enviado', 'entregado', 'PAGO_CONFIRMADO']
 }
+
 
 }, { timestamps: true });  // agrega createdAt y updatedAt
 
