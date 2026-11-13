@@ -5,6 +5,9 @@ const jwt      = require('jsonwebtoken');
 const Usuario  = require('../models/Usuario');
 const router   = express.Router();
 
+// Dominios de correo que aceptamos para registro
+const dominiosAceptados = ['gmail.com', 'hotmail.com', 'yahoo.com', 'outlook.com', 'icloud.com', 'me.com', 'mac.com', 'sena.edu.co'];
+
 // 2. POST /api/auth/registro — crear cuenta nueva
 router.post('/registro', async (req, res) => {
   try {
@@ -18,6 +21,12 @@ router.post('/registro', async (req, res) => {
     if (!email || !/\S+@\S+\.\S+/.test(email)) {
       return res.status(400).json({ error: 'El correo no es válido' });
     }
+// El dominio es lo que va después de la última @
+    const dominio = email.slice(email.lastIndexOf('@') + 1).toLowerCase();
+    if (!dominiosAceptados.includes(dominio)) {
+      return res.status(400).json({ error: 'Usa un correo de Gmail, Hotmail, Yahoo, Outlook o iCloud' });
+    } // <--- ¡Falta esta llave de cierre aquí!
+
     if (!password || password.length < 6) {
       return res.status(400).json({ error: 'La contraseña debe tener al menos 6 caracteres' });
     }
