@@ -1,16 +1,26 @@
 // 1. Importar dependencias
-const express = require('express');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const Usuario = require('../models/Usuario');
-const verificarToken = require('../middleware/auth');
+const express  = require('express');
+const bcrypt   = require('bcryptjs');
+const jwt      = require('jsonwebtoken');
+const Usuario  = require('../models/Usuario');
+const router   = express.Router();
 
-const router = express.Router();
-
-// 2. POST /api/auth/registro - crear cuenta nueva
+// 2. POST /api/auth/registro — crear cuenta nueva
 router.post('/registro', async (req, res) => {
   try {
-    const { nombre, email, password, departamento, municipio, rol } = req.body;                                                            
+    // El rol NO se lee del cuerpo: lo que manda el navegador no es de fiar
+    const { nombre, email, password, departamento, municipio } = req.body;
+
+    // Validar los datos: el servidor revisa aunque la página ya lo haya hecho
+    if (!nombre || nombre.trim().length < 3) {
+      return res.status(400).json({ error: 'El nombre debe tener al menos 3 caracteres' });
+    }
+    if (!email || !/\S+@\S+\.\S+/.test(email)) {
+      return res.status(400).json({ error: 'El correo no es válido' });
+    }
+    if (!password || password.length < 6) {
+      return res.status(400).json({ error: 'La contraseña debe tener al menos 6 caracteres' });
+    }
 
     // Verificar que el email no exista ya
     const existe = await Usuario.findOne({ email });
@@ -20,7 +30,7 @@ router.post('/registro', async (req, res) => {
     const hash = await bcrypt.hash(password, 10);
 
     // Guardar el usuario con la contraseña encriptada
-    const usuario = await Usuario.create({ nombre, email, password: hash, rol });
+    const usuario = await Usuario.create({ nombre, email, password: hash, departamento, municipio, rol: 'cliente' });
 
     res.status(201).json({ mensaje: 'Usuario creado correctamente', id: usuario._id });
   } catch (err) {
@@ -28,7 +38,7 @@ router.post('/registro', async (req, res) => {
   }
 });
 
-// 3. POST /api/auth/login - iniciar sesión y recibir token
+// 3. POST /api/auth/login — iniciar sesión y recibir token
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -41,30 +51,31 @@ router.post('/login', async (req, res) => {
     const valida = await bcrypt.compare(password, usuario.password);
     if (!valida) return res.status(401).json({ error: 'Email o contraseña incorrectos' });
 
-    // Crear el token JWT - dura 24 horas con clave por defecto segura
+    // Crear el token JWT — dura 24 horas
     const token = jwt.sign(
       { id: usuario._id, email: usuario.email, rol: usuario.rol },
-      process.env.JWT_SECRET || 'secreto_super_seguro_s17d',
+      process.env.JWT_SECRET,
       { expiresIn: '24h' }
     );
 
-    res.json({ token, nombre: usuario.nombre });
+    res.json({ token, nombre: usuario.nombre, rol: usuario.rol });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// 4. GET /api/auth/perfil - obtener datos del usuario logueado (Protegido por token)
+// 4. GET /api/auth/perfil — devuelve los datos del usuario logueado (requiere token)
+const verificarToken = require('../middleware/auth');
+
 router.get('/perfil', verificarToken, async (req, res) => {
   try {
-    // req.usuario.id viene del JWT decodificado por verificarToken
-    // .select('-password') excluye la contraseña por seguridad
+    // req.usuario.id viene del token — lo usa verificarToken
+    // select('-password') excluye el hash de contraseña de la respuesta
     const usuario = await Usuario.findById(req.usuario.id).select('-password');
     if (!usuario) return res.status(404).json({ error: 'Usuario no encontrado' });
-    
     res.json(usuario);
-  } catch (err) { 
-    res.status(500).json({ error: err.message }); 
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 });
 

@@ -12,7 +12,7 @@ const enlaces = [
 
 function Navbar() {
   const { items, vaciarCarrito } = useContext(CartContext);
-  const { usuario } = useContext(AuthContext);
+  const { usuario, logout } = useContext(AuthContext);
   const [abierto, setAbierto] = useState(false);
 
   function cerrar() {
@@ -54,9 +54,25 @@ function Navbar() {
               Vaciar
             </button>
           )}
-          <button className="hidden md:block bg-ink text-paper px-5 py-2.5 rounded-card text-sm font-semibold hover:bg-accent transition-colors">
-            {usuario ? usuario : "Ingresar"}
-          </button>
+
+          {usuario ? (
+            <div className="hidden md:flex items-center gap-4">
+              <span className="text-sm font-semibold">Hola, {usuario}</span>
+              <button
+                onClick={logout}
+                className="text-sm text-gray-700 underline hover:text-ink transition-colors"
+              >
+                Salir
+              </button>
+            </div>
+          ) : (
+            <Link
+              to="/login"
+              className="hidden md:block bg-ink text-paper px-5 py-2.5 rounded-card text-sm font-semibold hover:bg-accent transition-colors"
+            >
+              Ingresar
+            </Link>
+          )}
 
           <button
             onClick={() => setAbierto(!abierto)}
@@ -124,9 +140,28 @@ function Navbar() {
                 (abierto ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2")
               }
             >
-              <button className="w-full bg-ink text-paper py-3.5 rounded-card text-sm font-semibold">
-                {usuario ? usuario : "Ingresar"}
-              </button>
+              {usuario ? (
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-semibold">Hola, {usuario}</span>
+                  <button
+                    onClick={() => {
+                      logout();
+                      cerrar();
+                    }}
+                    className="bg-ink text-paper px-6 py-3 rounded-card text-sm font-semibold"
+                  >
+                    Salir
+                  </button>
+                </div>
+              ) : (
+                <Link
+                  to="/login"
+                  onClick={cerrar}
+                  className="block w-full text-center bg-ink text-paper py-3.5 rounded-card text-sm font-semibold"
+                >
+                  Ingresar
+                </Link>
+              )}
             </li>
           </ul>
         </div>
